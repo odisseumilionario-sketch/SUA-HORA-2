@@ -6,7 +6,7 @@ const KintuCheckout = memo(() => {
     <div className="rounded-xl overflow-hidden shadow-md" style={{ opacity: 1, transform: 'none' }}>
       <div style={{ position: 'relative', width: '100%', paddingTop: '375%' }}>
         <iframe
-          src="https://www.kintu.org/product/c80fa956-66ac-4c24-914c-b169cdd42b66"
+          src="https://www.kintu.org/product/a05823c9-8d34-4059-99b4-29e00e87c939"
           title="Checkout"
           allowFullScreen
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
