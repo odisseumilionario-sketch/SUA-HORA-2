@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Shield, CheckCircle, AlertTriangle } from 'lucide-react';
+import { trackingManager } from '@/lib/tracking';
 
 const SecurityConfirmationPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,16 @@ const SecurityConfirmationPage = () => {
   }, []);
 
   const handleActivate = () => {
+    // Track security activation - key conversion step
+    trackingManager.trackUserAction('security_activation', {
+      page: 'security_confirmation',
+      action: 'activate_security',
+      total_balance: totalBalance
+    });
+
+    // Track major conversion event
+    trackingManager.trackConversion('security_activation', totalBalance);
+    
     navigate('/final');
   };
 

@@ -13,6 +13,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Gift } from 'lucide-react';
+import { trackingManager } from '@/lib/tracking';
 
 const CouponValidationPage = () => {
   const { step } = useParams();
@@ -108,6 +109,21 @@ const CouponValidationPage = () => {
     localStorage.setItem('totalBalance', newBalance.toString());
     setRewardValue(currentCoupon.value);
     setShowReward(true);
+
+    // Track successful coupon validation
+    trackingManager.trackUserAction('coupon_validated', {
+      page: 'coupon_validation',
+      action: 'successful_validation',
+      step: currentStep,
+      coupon_id: currentCoupon.id,
+      coupon_brand: currentCoupon.brand,
+      coupon_product: currentCoupon.product,
+      reward_value: currentCoupon.value,
+      total_balance: newBalance
+    });
+
+    // Track conversion for coupon validation
+    trackingManager.trackConversion('coupon_validation', currentCoupon.value);
   };
 
   const handleContinue = () => {

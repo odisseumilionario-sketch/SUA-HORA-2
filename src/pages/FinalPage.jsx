@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { trackingManager } from '@/lib/tracking';
 
 const FinalPage = () => {
   const [totalBalance, setTotalBalance] = useState(0);
@@ -22,6 +23,16 @@ const FinalPage = () => {
   }, []);
 
   const handleWithdrawNow = () => {
+    // Track final withdrawal action - ultimate conversion
+    trackingManager.trackUserAction('final_withdrawal', {
+      page: 'final',
+      action: 'withdraw_now',
+      total_balance: totalBalance
+    });
+
+    // Track ultimate conversion event
+    trackingManager.trackConversion('final_withdrawal_click', totalBalance);
+    
     navigate('/checkout');
   };
 

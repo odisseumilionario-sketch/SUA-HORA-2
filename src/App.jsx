@@ -1,7 +1,8 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Toaster } from '@/components/ui/toaster';
+import { trackingManager } from '@/lib/tracking';
 import LandingPage from '@/pages/LandingPage';
 import IdentificationPage from '@/pages/IdentificationPage';
 import CouponValidationPage from '@/pages/CouponValidationPage';
@@ -11,7 +12,24 @@ import SecurityConfirmationPage from '@/pages/SecurityConfirmationPage';
 import FinalPage from '@/pages/FinalPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 
+// Component to track route changes
+function RouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Track page view when route changes
+    trackingManager.trackPageView();
+  }, [location]);
+
+  return null;
+}
+
 function App() {
+  useEffect(() => {
+    // Initialize tracking on app load
+    trackingManager.init();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -22,6 +40,7 @@ function App() {
       </Helmet>
       
       <Router>
+        <RouteTracker />
         <div className="mobile-container">
           <Routes>
             <Route path="/" element={<LandingPage />} />

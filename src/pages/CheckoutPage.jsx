@@ -1,5 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { motion } from 'framer-motion';
+import { trackingManager } from '@/lib/tracking';
 
 const KintuCheckout = memo(() => {
   return (
@@ -25,6 +26,16 @@ const CheckoutPage = () => {
   useEffect(() => {
     const storedBalance = parseInt(localStorage.getItem('totalBalance') || '0');
     setTotalBalance(Math.min(storedBalance, 200000));
+    
+    // Track checkout page view - this is a key conversion page
+    trackingManager.trackUserAction('checkout_page_view', {
+      page: 'checkout',
+      action: 'page_load',
+      total_balance: Math.min(storedBalance, 200000)
+    });
+
+    // Track major conversion event
+    trackingManager.trackConversion('checkout_page_visit', Math.min(storedBalance, 200000));
   }, []);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { CreditCard, Smartphone } from 'lucide-react';
+import { trackingManager } from '@/lib/tracking';
 
 const WithdrawalMethodPage = () => {
   const navigate = useNavigate();
@@ -38,6 +39,14 @@ const WithdrawalMethodPage = () => {
         return;
       }
     }
+
+    // Track withdrawal method selection
+    trackingManager.trackUserAction('withdrawal_method_selected', {
+      page: 'withdrawal_method',
+      action: 'confirm_withdrawal',
+      method: selectedMethod,
+      account_length: selectedMethod === 'multicaixa' ? phoneNumber.length : ibanNumber.length
+    });
 
     // Save withdrawal method
     localStorage.setItem('withdrawalMethod', selectedMethod);

@@ -3,11 +3,17 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Shield, CheckCircle, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackingManager } from '@/lib/tracking';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
+    // Track user starting the process
+    trackingManager.trackUserAction('start_process', {
+      page: 'landing',
+      action: 'click_start_button'
+    });
     navigate('/identificacao');
   };
 

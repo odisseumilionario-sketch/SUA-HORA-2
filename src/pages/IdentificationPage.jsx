@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { trackingManager } from '@/lib/tracking';
 
 const IdentificationPage = () => {
   const [name, setName] = useState('');
@@ -18,6 +19,13 @@ const IdentificationPage = () => {
       });
       return;
     }
+
+    // Track user providing name
+    trackingManager.trackUserAction('provide_name', {
+      page: 'identification',
+      action: 'submit_name',
+      name_length: name.trim().length
+    });
 
     localStorage.setItem('userName', name.trim());
     navigate('/validacao/1');
