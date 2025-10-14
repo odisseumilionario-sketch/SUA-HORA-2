@@ -70,8 +70,8 @@ const FinalPage = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <iframe 
-            id="panda-3962f433-cd10-4223-a81e-cb9c2782ff4b" 
-            src="https://player-vz-4d24e87a-e78.tv.pandavideo.com.br/embed/?v=3962f433-cd10-4223-a81e-cb9c2782ff4b" 
+            id="panda-d0a6e9ae-ed5d-41a3-9e53-12e145f30442" 
+            src="https://player-vz-0a641d40-de1.tv.pandavideo.com.br/embed/?v=d0a6e9ae-ed5d-41a3-9e53-12e145f30442" 
             style={{border: 'none', width: '100%', height: '100%'}} 
             allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
             allowFullScreen={true}
