@@ -7,9 +7,9 @@ const LimitReachedPage = () => {
   const navigate = useNavigate();
   const [totalBalance, setTotalBalance] = useState(0);
   const [shareCount, setShareCount] = useState(0);
-  const REQUIRED_CLICKS = 4;
+  const REQUIRED_CLICKS = 1;
   const FRIENDS_PER_CLICK = 5;
-  const GROUPS_TARGET = 4;
+  const GROUPS_TARGET = 1;
 
   const progressPercent = useMemo(() => {
     if (shareCount >= REQUIRED_CLICKS) {
@@ -20,20 +20,17 @@ const LimitReachedPage = () => {
 
   const progressMessage = useMemo(() => {
     if (shareCount === 0) {
-      return 'Você ainda não compartilhou. Faça 4 partilhas (cada clique pode atingir até 5 amigos ou 1 grupo inteiro).';
+      return 'Partilhe uma vez para alcançar 5 amigos ou um grupo inteiro.';
     }
 
     if (shareCount < REQUIRED_CLICKS) {
-      const remainingClicks = REQUIRED_CLICKS - shareCount;
       const friendsCovered = shareCount * FRIENDS_PER_CLICK;
       const groupsCovered = shareCount;
-      const remainingFriends = Math.max(FRIENDS_PER_CLICK * REQUIRED_CLICKS - friendsCovered, 0);
-      const remainingGroups = Math.max(GROUPS_TARGET - groupsCovered, 0);
 
-      return `Excelente! Você já compartilhou ${friendsCovered} amigos / ${groupsCovered} grupos. Faltam ${remainingClicks} ${remainingClicks === 1 ? 'clique' : 'cliques'} para completar os ${GROUPS_TARGET} grupos ou ${FRIENDS_PER_CLICK * REQUIRED_CLICKS} amigos.`;
+      return `Boa! Já alcançou ${friendsCovered} amigos ou ${groupsCovered} grupo. Faça mais uma partilha para liberar o acesso.`;
     }
 
-    return 'Excelente! Você já compartilhou o suficiente e atingiu 100% do progresso.';
+    return 'Tudo certo! Partilha confirmada e progresso completo.';
   }, [shareCount]);
 
   useEffect(() => {
@@ -125,7 +122,7 @@ const LimitReachedPage = () => {
           </div>
 
           <p className="text-gray-700 font-medium text-center">
-            🚀 Espalhe a sorte! Compartilhe com 4 grupos ou 20 amigos e depois clique em “Continuar” para **garantir sua recompensa agora!
+            🚀 Partilhe com 5 amigos ou 1 grupo e depois clique em “Continuar” para garantir a sua recompensa.
           </p>
 
           <div className="space-y-3">
