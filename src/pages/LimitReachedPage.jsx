@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,78 +6,20 @@ import { Button } from '@/components/ui/button';
 const LimitReachedPage = () => {
   const navigate = useNavigate();
   const [totalBalance, setTotalBalance] = useState(0);
-  const [shareCount, setShareCount] = useState(0);
-  const REQUIRED_CLICKS = 1;
-  const FRIENDS_PER_CLICK = 5;
-  const GROUPS_TARGET = 1;
-
-  const progressPercent = useMemo(() => {
-    if (shareCount >= REQUIRED_CLICKS) {
-      return 100;
-    }
-    return Math.min(Math.round((shareCount / REQUIRED_CLICKS) * 100), 100);
-  }, [shareCount]);
-
-  const progressMessage = useMemo(() => {
-    if (shareCount === 0) {
-      return 'Partilhe uma vez para alcançar 5 amigos ou um grupo inteiro.';
-    }
-
-    if (shareCount < REQUIRED_CLICKS) {
-      const friendsCovered = shareCount * FRIENDS_PER_CLICK;
-      const groupsCovered = shareCount;
-
-      return `Boa! Já alcançou ${friendsCovered} amigos ou ${groupsCovered} grupo. Faça mais uma partilha para liberar o acesso.`;
-    }
-
-    return 'Tudo certo! Partilha confirmada e progresso completo.';
-  }, [shareCount]);
 
   useEffect(() => {
-    const storedBalance = parseInt(localStorage.getItem('totalBalance') || '0', 10);
-    setTotalBalance(Number.isNaN(storedBalance) ? 0 : storedBalance);
+    const storedBalance = parseInt(localStorage.getItem('totalBalance') || '0');
+    setTotalBalance(storedBalance);
   }, []);
 
-  const shareMessage = useMemo(
-    () =>
-      'É real! Acabei de clicar e ganhei um bônus em dinheiro! É super fácil e recomendo muito que você experimente! Não perca! https://milionariorapido.onrender.com',
-    []
-  );
-
-  const handleShare = useCallback(
-    (platform) => {
-      const encodedMessage = encodeURIComponent(shareMessage);
-
-      if (platform === 'whatsapp') {
-        window.open(`https://api.whatsapp.com/send?text=${encodedMessage}`, '_blank', 'noopener');
-      }
-
-      if (platform === 'messenger') {
-        const baseLink = 'https://milionariorapido.onrender.com';
-        const messengerUrl = `fb-messenger://share/?link=${encodeURIComponent(baseLink)}&app_id=123456789&text=${encodedMessage}`;
-        const fallbackUrl = `https://www.facebook.com/dialog/send?app_id=123456789&link=${encodeURIComponent(baseLink)}&redirect_uri=${encodeURIComponent(baseLink)}&quote=${encodedMessage}`;
-
-        const newWindow = window.open(messengerUrl, '_blank', 'noopener');
-        if (!newWindow) {
-          window.open(fallbackUrl, '_blank', 'noopener');
-        }
-      }
-
-      setShareCount((prev) => Math.min(prev + 1, REQUIRED_CLICKS));
-    },
-    [shareMessage]
-  );
-
-  const handleContinue = useCallback(() => {
-    if (shareCount >= REQUIRED_CLICKS) {
-      navigate('/metodo-saque');
-    }
-  }, [navigate, shareCount]);
+  const handleWithdraw = () => {
+    navigate('/metodo-saque');
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <motion.div
+      <motion.div 
         className="text-center py-8 px-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,80 +37,55 @@ const LimitReachedPage = () => {
       </motion.div>
 
       {/* Main Content */}
-      <motion.div
+      <motion.div 
         className="flex-1 px-6 flex flex-col justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <motion.div
-          className="max-w-md mx-auto border border-gray-100 rounded-3xl p-8 shadow-xl bg-white/95 backdrop-blur-sm flex flex-col gap-6"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="space-y-2 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Limite Diário Atingido!</h2>
-            <p className="text-gray-600">Você atingiu o limite de cupões diários.</p>
-          </div>
-
-          <div className="bg-gray-50 rounded-2xl p-5 shadow-inner">
-            <p className="text-sm font-medium text-gray-500">Saldo Total Acumulado</p>
-            <p className="text-3xl font-bold text-green-600 mt-1">
-              {Math.max(totalBalance, 0)
-                .toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })
-                .replace('AOA', 'Kz')}
-            </p>
-          </div>
-
-          <p className="text-gray-700 font-medium text-center">
-            🚀 Partilhe com 5 amigos ou 1 grupo e depois clique em “Continuar” para garantir a sua recompensa.
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Limite Diário Atingido!
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Você atingiu o limite de cupões diários.
           </p>
-
-          <div className="space-y-3">
-            <Button
-              onClick={() => handleShare('whatsapp')}
-              className="w-full bg-[#25D366] hover:bg-[#1da955] text-white font-bold py-3 px-4 rounded-2xl text-base shadow-md"
-            >
-              Partilhar via WhatsApp
-            </Button>
-            <Button
-              onClick={() => handleShare('messenger')}
-              className="w-full text-white font-bold py-3 px-4 rounded-2xl text-base shadow-md"
-              style={{ background: 'linear-gradient(45deg, #0084ff, #c21aff)' }}
-            >
-              Partilhar via Messenger
-            </Button>
-          </div>
-
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 text-center shadow-sm">
-            <p className="text-sm font-semibold text-yellow-800 leading-relaxed">
-              {progressMessage}
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <div className="w-full h-3.5 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-yellow-400 transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-            <p className="text-sm text-gray-500 text-center">
-              {progressPercent}% concluído • {shareCount}/{REQUIRED_CLICKS} partilhas registradas
-            </p>
-          </div>
-
-          <Button
-            onClick={handleContinue}
-            disabled={shareCount < REQUIRED_CLICKS}
-            className={`w-full font-bold py-3 px-4 rounded-2xl text-base shadow-lg transition-all duration-300 ${
-              shareCount >= REQUIRED_CLICKS
-                ? 'bg-yellow-400 hover:bg-yellow-500 text-black'
-                : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            }`}
+          
+          {/* Balance Display */}
+          <motion.div 
+            className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 mb-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Continuar
+            <p className="text-gray-600 mb-2">Saldo Total Acumulado:</p>
+            <p className="text-4xl font-bold text-green-600 glow-effect">
+              {totalBalance.toLocaleString()} Kz
+            </p>
+          </motion.div>
+
+          <div className="flex items-center justify-center mb-8">
+            <span className="mr-2">⬇️</span>
+            <p className="text-blue-600 font-medium">
+              Realize o seu saque abaixo
+            </p>
+            <span className="ml-2">⬇️</span>
+          </div>
+        </div>
+
+        {/* Withdraw Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Button
+            onClick={handleWithdraw}
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-6 rounded-2xl text-lg shadow-lg button-hover pulse-animation"
+          >
+            REALIZAR SAQUE
           </Button>
         </motion.div>
       </motion.div>
