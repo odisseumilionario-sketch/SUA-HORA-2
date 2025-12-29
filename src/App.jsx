@@ -11,6 +11,7 @@ import WithdrawalMethodPage from '@/pages/WithdrawalMethodPage';
 import SecurityConfirmationPage from '@/pages/SecurityConfirmationPage';
 import FinalPage from '@/pages/FinalPage';
 import CheckoutPage from '@/pages/CheckoutPage';
+import PaymentVideoPage from '@/pages/PaymentVideoPage';
 
 // Component to track route changes
 function RouteTracker() {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/metodo-saque" element={<WithdrawalMethodPage />} />
             <Route path="/confirmacao-seguranca" element={<SecurityConfirmationPage />} />
             <Route path="/final" element={<FinalPage />} />
+            <Route path="/pagamento-video" element={<PaymentVideoPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>
         </div>
