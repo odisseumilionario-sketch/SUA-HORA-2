@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { usePreserveQueryNavigate } from '@/lib/usePreserveQueryNavigate';
 import { trackingManager } from '@/lib/tracking';
 
 const FinalPage = () => {
   const [totalBalance, setTotalBalance] = useState(0);
   const [showButton, setShowButton] = useState(false);
-  const navigate = useNavigate();
+  const navigate = usePreserveQueryNavigate();
 
   useEffect(() => {
     const storedBalance = parseInt(localStorage.getItem('totalBalance') || '0');
@@ -33,7 +33,7 @@ const FinalPage = () => {
     // Track ultimate conversion event
     trackingManager.trackConversion('final_withdrawal_click', totalBalance);
     
-    navigate('/checkout');
+    navigate('/pagamento-video');
   };
 
   return (

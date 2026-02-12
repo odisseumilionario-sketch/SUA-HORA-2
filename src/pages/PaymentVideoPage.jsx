@@ -106,7 +106,7 @@ const PaymentVideoPage = () => {
         <div className="text-right">
            <p className="text-sm text-gray-500">Saldo:</p>
            <p className="text-lg font-bold text-green-600 bg-yellow-200 px-3 py-1 rounded-full">
-            {totalBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' }).replace('AOA', 'Kz')}
+            {totalBalance.toLocaleString()} Kz
           </p>
         </div>
       </motion.div>
@@ -125,10 +125,8 @@ const PaymentVideoPage = () => {
             style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
             allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
             allowFullScreen={true}
-            width={720}
-            height={360}
             fetchPriority="high"
-          ></iframe>
+          />
         </motion.div>
 
         <motion.div 
